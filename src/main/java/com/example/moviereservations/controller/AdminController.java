@@ -4,6 +4,7 @@ import com.example.moviereservations.model.Movie;
 import com.example.moviereservations.model.ShowTime;
 import com.example.moviereservations.service.MovieService;
 import com.example.moviereservations.service.ShowTimeService;
+import com.example.moviereservations.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +22,13 @@ public class AdminController {
     @Autowired
     private ShowTimeService showTimeService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public String adminDashboard(Model model) {
         model.addAttribute("movies", movieService.getAllMovies());
+        model.addAttribute("users", userService.getAllUsers());
         return "admin";
     }
 
@@ -69,6 +74,12 @@ public class AdminController {
     @PostMapping("/showtimes")
     public String createShowTime(@RequestParam Long movieId, @ModelAttribute ShowTime showTime) {
         showTimeService.addShowTime(movieId, showTime);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/users/promote")
+    public String promoteUserToAdmin(@RequestParam Long userId) {
+        userService.promoteToAdmin(userId);
         return "redirect:/admin";
     }
 }

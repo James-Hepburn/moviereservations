@@ -46,4 +46,14 @@ public class UserService {
         User user = getUserById (id);
         this.userRepository.delete (user);
     }
+
+    public void promoteToAdmin(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!user.getRoles().contains("ROLE_ADMIN")) {
+            user.getRoles().add("ROLE_ADMIN");
+            userRepository.save(user);
+        }
+    }
 }

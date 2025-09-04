@@ -102,5 +102,33 @@
         </tr>
         </tbody>
     </table>
+
+    <h2>Users</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.roles}"></td>
+            <td>
+                <form th:action="@{/admin/users/promote}" method="post">
+                    <input type="hidden" name="userId" th:value="${user.id}" />
+                    <button type="submit"
+                            th:if="${!user.roles.contains('ROLE_ADMIN')}">
+                        Promote to Admin
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>
