@@ -55,7 +55,7 @@ public class ReservationService {
             throw new RuntimeException ("You can only cancel your own reservations");
         }
 
-        if (reservation.getReservationTime ().isBefore (LocalDateTime.now ())) {
+        if (reservation.getShowTime ().getStartTime ().isBefore (LocalDateTime.now ())) {
             throw new RuntimeException ("Cannot cancel past reservations");
         }
 

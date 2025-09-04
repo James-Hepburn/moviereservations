@@ -32,7 +32,7 @@
         }
 
         img {
-            width: 100%;
+            width: 20%;
             border-radius: 5px;
             margin-bottom: 15px;
         }
@@ -80,9 +80,9 @@
     <div th:each="reservation : ${reservations}">
         <img th:src="${reservation.showTime.movie.posterImageUrl}" alt="Poster" />
         <h2 th:text="${reservation.showTime.movie.title}"></h2>
-        <p th:text="'Showtime: ' + ${#dates.format(reservation.showTime.startTime, 'yyyy-MM-dd HH:mm')}"></p>
-        <p th:text="'Seats: ' + ${reservation.reservedSeats}"></p>
-        <p th:text="'Reserved on: ' + ${#dates.format(reservation.reservationTime, 'yyyy-MM-dd HH:mm')}"></p>
+        <p th:text="'Showtime: ' + ${#temporals.format(reservation.showTime.startTime, 'yyyy-MM-dd HH:mm')}"></p>
+        <p th:text="'Seats: ' + ${reservation.reservedSeats.size()}"></p>
+        <p th:text="'Reserved on: ' + ${#temporals.format(reservation.reservationTime, 'yyyy-MM-dd HH:mm')}"></p>
         <form th:action="@{/reservations/{id}/cancel(id=${reservation.id})}" method="post">
             <button type="submit" th:if="${!reservation.canceled}">Cancel</button>
             <span th:if="${reservation.canceled}">Canceled</span>

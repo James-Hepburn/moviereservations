@@ -40,7 +40,7 @@ public class AuthService {
                     .orElse (this.userRepository.findByEmail (usernameOrEmail)
                             .orElseThrow (() -> new RuntimeException ("User not found")));
             return this.jwtUtil.generateToken (org.springframework.security.core.userdetails.User
-                    .withUsername (user.getUsername ())
+                    .withUsername (user.getEmail ())
                     .password (user.getPassword ())
                     .authorities(user.getRoles().stream()
                             .map(SimpleGrantedAuthority::new)

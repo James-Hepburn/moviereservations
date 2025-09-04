@@ -30,7 +30,7 @@ public class ReservationController {
 
     @GetMapping
     public String listReservations(Model model, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         List<Reservation> reservations = reservationService.getReservationsByUser(user.getId());
         model.addAttribute("reservations", reservations);
         return "reservations";
@@ -40,7 +40,7 @@ public class ReservationController {
     public String createReservation(@RequestParam Long showTimeId,
                                     @RequestParam int numSeats,
                                     Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         ShowTime showTime = showTimeService.getShowTimeById(showTimeId);
 
         if (numSeats > showTime.getAvailableSeats()) {
@@ -57,7 +57,7 @@ public class ReservationController {
 
     @PostMapping("/{id}/cancel")
     public String cancelReservation(@PathVariable Long id, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
+        User user = userService.getUserByEmail(principal.getName());
         reservationService.cancelReservation(id, user.getId());
         return "redirect:/reservations";
     }

@@ -22,6 +22,11 @@ public class UserService {
                 .orElseThrow (() -> new RuntimeException ("User not found"));
     }
 
+    public User getUserByEmail (String email) {
+        return this.userRepository.findByEmail (email)
+                .orElseThrow (() -> new RuntimeException ("User not found"));
+    }
+
     public List <User> getAllUsers () {
         return this.userRepository.findAll ();
     }

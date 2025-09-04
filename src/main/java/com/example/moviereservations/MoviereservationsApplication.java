@@ -58,28 +58,30 @@ public class MoviereservationsApplication {
     @Bean
     CommandLineRunner initShowTimes(MovieRepository movieRepository, ShowTimeRepository showTimeRepository) {
         return args -> {
+            LocalDateTime now = LocalDateTime.now();
+
             Movie inception = movieRepository.findByTitle("Inception").orElse(null);
             if (inception != null && showTimeRepository.findByMovieId(inception.getId()).isEmpty()) {
-                showTimeRepository.save(new ShowTime(inception, LocalDateTime.of(2025, 9, 5, 19, 0), 30, 30));
-                showTimeRepository.save(new ShowTime(inception, LocalDateTime.of(2025, 9, 5, 21, 0), 30, 30));
+                showTimeRepository.save(new ShowTime(inception, now.plusDays(1).withHour(19).withMinute(0), 30, 30));
+                showTimeRepository.save(new ShowTime(inception, now.plusDays(1).withHour(21).withMinute(0), 30, 30));
             }
 
             Movie darkKnight = movieRepository.findByTitle("The Dark Knight").orElse(null);
             if (darkKnight != null && showTimeRepository.findByMovieId(darkKnight.getId()).isEmpty()) {
-                showTimeRepository.save(new ShowTime(darkKnight, LocalDateTime.of(2025, 9, 6, 18, 30), 30, 30));
-                showTimeRepository.save(new ShowTime(darkKnight, LocalDateTime.of(2025, 9, 6, 21, 0), 30, 30));
+                showTimeRepository.save(new ShowTime(darkKnight, now.plusDays(2).withHour(18).withMinute(30), 30, 30));
+                showTimeRepository.save(new ShowTime(darkKnight, now.plusDays(2).withHour(21).withMinute(0), 30, 30));
             }
 
             Movie interstellar = movieRepository.findByTitle("Interstellar").orElse(null);
             if (interstellar != null && showTimeRepository.findByMovieId(interstellar.getId()).isEmpty()) {
-                showTimeRepository.save(new ShowTime(interstellar, LocalDateTime.of(2025, 9, 7, 17, 0), 30, 30));
-                showTimeRepository.save(new ShowTime(interstellar, LocalDateTime.of(2025, 9, 7, 20, 0), 30, 30));
+                showTimeRepository.save(new ShowTime(interstellar, now.plusDays(3).withHour(17).withMinute(0), 30, 30));
+                showTimeRepository.save(new ShowTime(interstellar, now.plusDays(3).withHour(20).withMinute(0), 30, 30));
             }
 
             Movie prestige = movieRepository.findByTitle("The Prestige").orElse(null);
             if (prestige != null && showTimeRepository.findByMovieId(prestige.getId()).isEmpty()) {
-                showTimeRepository.save(new ShowTime(prestige, LocalDateTime.of(2025, 9, 8, 19, 0), 30, 30));
-                showTimeRepository.save(new ShowTime(prestige, LocalDateTime.of(2025, 9, 8, 21, 0), 30, 30));
+                showTimeRepository.save(new ShowTime(prestige, now.plusDays(4).withHour(19).withMinute(0), 30, 30));
+                showTimeRepository.save(new ShowTime(prestige, now.plusDays(4).withHour(21).withMinute(0), 30, 30));
             }
         };
     }
