@@ -1,6 +1,7 @@
 package com.example.moviereservations.controller;
 
 import com.example.moviereservations.model.User;
+import com.example.moviereservations.service.AuthService;
 import com.example.moviereservations.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,14 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
+    private AuthService authService;
+
+    @Autowired
     private UserService userService;
 
     @GetMapping("/")
     public String index() {
-        return "index"; // show login/register selection
+        return "index";
     }
 
     @GetMapping("/login")
@@ -34,19 +38,13 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("user") User user,
                                BindingResult result, Model model) {
-        if (result.hasErrors()) {
+        if (result.hasErrors()) return "register";
+        try {
+            authService.register(user.getUsername(), user.getEmail(), user.getPassword());
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
             return "register";
         }
-        if (userService.existsByUsername(user.getUsername())) {
-            model.addAttribute("usernameError", "Username already taken");
-            return "register";
-        }
-        if (userService.existsByEmail(user.getEmail())) {
-            model.addAttribute("emailError", "Email already registered");
-            return "register";
-        }
-
-        userService.registerUser(user);
         return "redirect:/login";
     }
 }
