@@ -1,10 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Booking</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        img {
+            width: 250px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 350px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        div[th\\:each] {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #e67e22;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #d35400;
+        }
+    </style>
 </head>
 <body>
+    <h1 th:text="${movie.title}"></h1>
+    <img th:src="${movie.posterImageUrl}" alt="Poster" />
+    <p th:text="${movie.description}"></p>
+    <p th:text="${movie.genre}"></p>
 
+    <h2>Select Showtime</h2>
+    <form th:action="@{/reservations/create}" method="post">
+        <input type="hidden" name="showTimeId" th:value="${showTimes[0].id}" />
+        <div th:each="showTime : ${showTimes}">
+            <input type="radio" name="showTimeId" th:value="${showTime.id}" required />
+            <span th:text="${#dates.format(showTime.startTime, 'yyyy-MM-dd HH:mm')}"></span>
+            <span th:text="'Available seats: ' + ${showTime.availableSeats}"></span>
+        </div>
+
+        <label>Seats (comma separated, e.g., A1,A2):</label>
+        <input type="text" name="seats" required />
+        <button type="submit">Book</button>
+    </form>
 </body>
 </html>

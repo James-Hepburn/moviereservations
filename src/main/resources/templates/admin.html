@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            margin-right: 10px;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        thead {
+            background-color: #34495e;
+            color: #fff;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        img {
+            width: 80px;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 <body>
-
+    <h1>Admin Dashboard</h1>
+    <a th:href="@{/admin/movies/new}">Add New Movie</a>
+    <table>
+        <thead>
+        <tr>
+            <th>Poster</th>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="movie : ${movies}">
+            <td><img th:src="${movie.posterImageUrl}" alt="Poster" /></td>
+            <td th:text="${movie.title}"></td>
+            <td th:text="${movie.genre}"></td>
+            <td th:text="${movie.description}"></td>
+            <td>
+                <a th:href="@{/admin/movies/{id}/edit(id=${movie.id})}">Edit</a>
+                <form th:action="@{/admin/movies/{id}/delete(id=${movie.id})}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+                <a th:href="@{/admin/showtimes/new(movieId=${movie.id})}">Add Showtime</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

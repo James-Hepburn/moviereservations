@@ -1,10 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Reservations</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        div[th\\:each] {
+            display: inline-block;
+            width: 300px;
+            margin: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        p {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 8px 20px;
+            font-size: 0.95rem;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+
+        span {
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+    </style>
 </head>
 <body>
-
+    <h1>Your Reservations</h1>
+    <div th:each="reservation : ${reservations}">
+        <img th:src="${reservation.showTime.movie.posterImageUrl}" alt="Poster" />
+        <h2 th:text="${reservation.showTime.movie.title}"></h2>
+        <p th:text="'Showtime: ' + ${#dates.format(reservation.showTime.startTime, 'yyyy-MM-dd HH:mm')}"></p>
+        <p th:text="'Seats: ' + ${reservation.reservedSeats}"></p>
+        <p th:text="'Reserved on: ' + ${#dates.format(reservation.reservationTime, 'yyyy-MM-dd HH:mm')}"></p>
+        <form th:action="@{/reservations/{id}/cancel(id=${reservation.id})}" method="post">
+            <button type="submit" th:if="${!reservation.canceled}">Cancel</button>
+            <span th:if="${reservation.canceled}">Canceled</span>
+        </form>
+    </div>
 </body>
 </html>
