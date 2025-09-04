@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -81,5 +82,30 @@ public class ReservationService {
         return this.reservationRepository.findByCanceledFalse ()
                 .stream ().mapToLong (r -> r.getReservedSeats ().size ())
                 .map (seats -> seats * (long) pricePerSeat).sum ();
+    }
+
+    public Reservation createReservationAutoAssign(Long userId, Long showTimeId, int numSeats) {
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        ShowTime showTime = this.showTimeRepository.findById(showTimeId)
+                .orElseThrow(() -> new RuntimeException("ShowTime not found"));
+
+        if (numSeats > showTime.getAvailableSeats()) {
+            throw new RuntimeException("Not enough available seats");
+        }
+
+        List<String> reservedSeats = new ArrayList<>();
+        int startSeat = showTime.getTotalSeats() - showTime.getAvailableSeats() + 1;
+        for (int i = 0; i < numSeats; i++) {
+            reservedSeats.add("Seat " + (startSeat + i));
+        }
+
+        showTime.setAvailableSeats(showTime.getAvailableSeats() - numSeats);
+        this.showTimeRepository.save(showTime);
+
+        Reservation reservation = new Reservation(user, showTime, LocalDateTime.now());
+        reservation.setReservedSeats(reservedSeats);
+
+        return this.reservationRepository.save(reservation);
     }
 }

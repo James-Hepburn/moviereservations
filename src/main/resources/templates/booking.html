@@ -97,12 +97,12 @@
         <input type="hidden" name="showTimeId" th:value="${showTimes[0].id}" />
         <div th:each="showTime : ${showTimes}">
             <input type="radio" name="showTimeId" th:value="${showTime.id}" required />
-            <span th:text="${#dates.format(showTime.startTime, 'yyyy-MM-dd HH:mm')}"></span>
+            <span th:text="${#temporals.format(showTime.startTime, 'yyyy-MM-dd HH:mm')}"></span>
             <span th:text="'Available seats: ' + ${showTime.availableSeats}"></span>
         </div>
 
-        <label>Seats (comma separated, e.g., A1,A2):</label>
-        <input type="text" name="seats" required />
+        <label>Number of Seats:</label>
+        <input type="number" name="numSeats" min="1" required />
         <button type="submit">Book</button>
     </form>
 </body>

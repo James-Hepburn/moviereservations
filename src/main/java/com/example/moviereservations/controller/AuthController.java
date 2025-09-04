@@ -3,6 +3,7 @@ package com.example.moviereservations.controller;
 import com.example.moviereservations.model.User;
 import com.example.moviereservations.service.AuthService;
 import com.example.moviereservations.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,21 @@ public class AuthController {
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@RequestParam String username,
+                            @RequestParam String password,
+                            Model model,
+                            HttpSession session) {
+        try {
+            String token = authService.login(username, password);
+            session.setAttribute("JWT_TOKEN", token);
+            return "redirect:/movies";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "login";
+        }
     }
 
     @GetMapping("/register")
