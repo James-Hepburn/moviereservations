@@ -68,7 +68,7 @@ public class AdminController {
 
     @PostMapping("/showtimes")
     public String createShowTime(@RequestParam Long movieId, @ModelAttribute ShowTime showTime) {
-        movieService.addShowTime(movieId, showTime);
+        showTimeService.addShowTime(movieId, showTime);
         return "redirect:/admin";
     }
 }

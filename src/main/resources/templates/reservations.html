@@ -63,6 +63,8 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         button:hover {
@@ -88,5 +90,9 @@
             <span th:if="${reservation.canceled}">Canceled</span>
         </form>
     </div>
+
+    <a href="/movies" style="display:inline-block; margin-top:20px; padding:10px 20px; font-size:1rem; color:#fff; background-color:#3498db; text-decoration:none; border-radius:5px;">
+        Back to Movies
+    </a>
 </body>
 </html>

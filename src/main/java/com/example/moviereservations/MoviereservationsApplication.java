@@ -3,12 +3,17 @@ package com.example.moviereservations;
 import com.example.moviereservations.model.Movie;
 import com.example.moviereservations.model.ShowTime;
 import java.time.LocalDateTime;
+import java.util.Set;
+
+import com.example.moviereservations.model.User;
 import com.example.moviereservations.repository.MovieRepository;
 import com.example.moviereservations.repository.ShowTimeRepository;
+import com.example.moviereservations.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class MoviereservationsApplication {
@@ -82,6 +87,20 @@ public class MoviereservationsApplication {
             if (prestige != null && showTimeRepository.findByMovieId(prestige.getId()).isEmpty()) {
                 showTimeRepository.save(new ShowTime(prestige, now.plusDays(4).withHour(19).withMinute(0), 30, 30));
                 showTimeRepository.save(new ShowTime(prestige, now.plusDays(4).withHour(21).withMinute(0), 30, 30));
+            }
+        };
+    }
+
+    @Bean
+    CommandLineRunner initUsers(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+            if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
+                User admin = new User();
+                admin.setUsername("admin");
+                admin.setEmail("admin@gmail.com");
+                admin.setPassword(passwordEncoder.encode("admin"));
+                admin.setRoles(Set.of("ROLE_ADMIN"));
+                userRepository.save(admin);
             }
         };
     }

@@ -22,7 +22,7 @@ public class Movie {
     private String genre;
     private String posterImageUrl;
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List <ShowTime> showTimes = new ArrayList<>();
 
     public Movie (String title, String description, String genre, String posterImageUrl) {

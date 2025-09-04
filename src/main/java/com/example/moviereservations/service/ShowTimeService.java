@@ -24,6 +24,7 @@ public class ShowTimeService {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
         showTime.setMovie(movie);
+        movie.getShowTimes().add(showTime);
         return showTimeRepository.save(showTime);
     }
 

@@ -24,7 +24,7 @@ public class ShowTime {
     private int totalSeats;
     private int availableSeats;
 
-    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL)
     private List <Reservation> reservations = new ArrayList<>();
 
     public ShowTime (Movie movie, LocalDateTime startTime, int totalSeats, int availableSeats) {
